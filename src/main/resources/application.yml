@@ -23,6 +23,11 @@ spring:
           model: gpt-4o
           temperature: 0.2
           maxTokens: 1000
+    chat:
+      memory:
+        repository:
+          jdbc:
+            initialize-schema: always
 
 springdoc:
   api-docs:

@@ -1,6 +1,8 @@
 package se.lexicon.flightbooking_api.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.ai.tool.annotation.Tool;
+import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.lexicon.flightbooking_api.dto.AvailableFlightDTO;
@@ -27,7 +29,10 @@ public class FlightBookingServiceImpl implements FlightBookingService {
 
 
     @Override
-    public FlightBookingDTO bookFlight(Long flightId, BookFlightRequestDTO bookingRequest) {
+    @Tool(description = "Book a flight for a passenger. Returns an object describing the booked flight")
+    public FlightBookingDTO bookFlight(
+            @ToolParam(description = "The flight id") Long flightId,
+            @ToolParam(description = "Booking details") BookFlightRequestDTO bookingRequest) {
         FlightBooking flight = flightBookingRepository.findById(flightId)
                 .orElseThrow(() -> new ResourceNotFoundException("Flight not found"));
 
@@ -44,7 +49,10 @@ public class FlightBookingServiceImpl implements FlightBookingService {
     }
 
     @Override
-    public void cancelFlight(Long flightId, String passengerEmail) {
+    @Tool(description = "Cancel a passenger's flight")
+    public void cancelFlight(
+            @ToolParam(description = "The flight id") Long flightId,
+            @ToolParam(description = "The passenger's email address") String passengerEmail) {
         FlightBooking flight = flightBookingRepository.findById(flightId)
                 .orElseThrow(() -> new ResourceNotFoundException("Flight not found"));
 
@@ -57,6 +65,7 @@ public class FlightBookingServiceImpl implements FlightBookingService {
     }
 
     @Override
+    @Tool(description = "Find all available (non booked) flights. Returns a list of objects describing the available flight")
     public List<AvailableFlightDTO> findAvailableFlights() {
         return flightBookingRepository.findByStatus(FlightStatus.AVAILABLE)
                 .stream()
@@ -65,7 +74,9 @@ public class FlightBookingServiceImpl implements FlightBookingService {
     }
 
     @Override
-    public List<FlightBookingDTO> findBookingsByEmail(String email) {
+    @Tool(description = "Find a passenger's all booked flights. Returns a list of objects describing the booked flight")
+    public List<FlightBookingDTO> findBookingsByEmail(
+            @ToolParam(description = "The passenger's email address") String email) {
         return flightBookingRepository.findByPassengerEmail(email)
                 .stream()
                 .map(mapper::toDTO)
@@ -73,6 +84,7 @@ public class FlightBookingServiceImpl implements FlightBookingService {
     }
 
     @Override
+    @Tool(description = "Find all flights (both booked and available). Returns a list of objects describing the flight")
     public List<FlightListDTO> findAll() {
         return flightBookingRepository.findAll()
                 .stream()
