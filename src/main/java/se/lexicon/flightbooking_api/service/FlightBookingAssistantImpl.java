@@ -6,6 +6,7 @@ import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import se.lexicon.flightbooking_api.dto.ChatRequestDTO;
 
 @Service
 public class FlightBookingAssistantImpl implements FlightBookingAssistant {
@@ -20,10 +21,10 @@ public class FlightBookingAssistantImpl implements FlightBookingAssistant {
                 .build();
     }
 
-    public Flux<String> processChatQuery(String chatId, String chatQuery) {
+    public Flux<String> processChatQuery(ChatRequestDTO chatRequest) {
         var prompt = chatClient.prompt()
-                .user(chatQuery)
-                .advisors(advisor -> advisor.param(ChatMemory.CONVERSATION_ID, chatId));
+                .user(chatRequest.message())
+                .advisors(advisor -> advisor.param(ChatMemory.CONVERSATION_ID, chatRequest.chatId()));
 
         return prompt.stream().content();
     }

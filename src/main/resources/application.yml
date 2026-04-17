@@ -20,7 +20,7 @@ spring:
       api-key: ${OPENAI_API_KEY}
       chat:
         options:
-          model: gpt-4o
+          model: gpt-4o-mini
           temperature: 0.2
           maxTokens: 1000
     chat:
@@ -36,3 +36,7 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
     enabled: true
+
+logging:
+  level:
+    org.springframework.ai: TRACE

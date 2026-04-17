@@ -7,22 +7,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
-import org.springframework.ai.tool.ToolCallback;
-import org.springframework.ai.tool.ToolCallbackProvider;
-import org.springframework.ai.tool.definition.ToolDefinition;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
-import se.lexicon.flightbooking_api.dto.AvailableFlightDTO;
-import se.lexicon.flightbooking_api.dto.BookFlightRequestDTO;
-import se.lexicon.flightbooking_api.dto.FlightBookingDTO;
-import se.lexicon.flightbooking_api.dto.FlightListDTO;
+import se.lexicon.flightbooking_api.dto.*;
 import se.lexicon.flightbooking_api.service.FlightBookingAssistantImpl;
 import se.lexicon.flightbooking_api.service.FlightBookingService;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -33,7 +25,6 @@ public class FlightBookingController {
 
     private final FlightBookingService flightBookingService;
     private final FlightBookingAssistantImpl flightBookingAssistantImpl;
-    private final ToolCallbackProvider toolCallbackProvider;
 
     @Operation(summary = "Get all flights", description = "Returns a list of all flights")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved all flights")
@@ -87,17 +78,9 @@ public class FlightBookingController {
     @Operation(summary = "Chat with the flight booking assistant",
             description = "A chat bot assistant for easy searching, booking and cancelling of flights. Returns responses and confirmations")
     @ApiResponse(responseCode = "200", description = "Successfully received response from the flight booking assistant")
-    @GetMapping("/assistant")
+    @PostMapping("/assistant")
     public Flux<String> assistant(
-            @RequestParam @NotBlank String chatId,
-            @RequestParam @NotBlank String chatQuery) {
-        return flightBookingAssistantImpl.processChatQuery(chatId, chatQuery);
-    }
-
-    @GetMapping("/debug/tools")
-    public List<ToolDefinition> tools() {
-        return Arrays.stream(toolCallbackProvider.getToolCallbacks())
-                .map(ToolCallback::getToolDefinition)
-                .toList();
+            @Parameter(description = "Chat request with session id and message") @RequestBody @Valid ChatRequestDTO chatRequest) {
+        return flightBookingAssistantImpl.processChatQuery(chatRequest);
     }
 }
