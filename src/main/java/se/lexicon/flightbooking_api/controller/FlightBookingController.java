@@ -10,7 +10,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Flux;
 import se.lexicon.flightbooking_api.dto.*;
 import se.lexicon.flightbooking_api.service.FlightBookingAssistantImpl;
 import se.lexicon.flightbooking_api.service.FlightBookingService;
@@ -79,7 +78,7 @@ public class FlightBookingController {
             description = "A chat bot assistant for easy searching, booking and cancelling of flights. Returns responses and confirmations")
     @ApiResponse(responseCode = "200", description = "Successfully received response from the flight booking assistant")
     @PostMapping("/assistant")
-    public Flux<String> assistant(
+    public ChatResponseDTO assistant(
             @Parameter(description = "Chat request with session id and message") @RequestBody @Valid ChatRequestDTO chatRequest) {
         return flightBookingAssistantImpl.processChatQuery(chatRequest);
     }
