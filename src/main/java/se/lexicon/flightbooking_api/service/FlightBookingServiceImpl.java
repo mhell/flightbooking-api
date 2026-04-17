@@ -74,7 +74,7 @@ public class FlightBookingServiceImpl implements FlightBookingService {
     }
 
     @Override
-    @Tool(description = "Find all booked flights of a passenger using his or hers email. Returns a list of objects describing the booked flights")
+    @Tool(description = "Find a passenger's booked flights using the passenger email. Returns a list of objects describing the booked flights")
     public List<FlightBookingDTO> findBookingsByEmail(
             @ToolParam(description = "The passenger's email address") String email) {
         return flightBookingRepository.findByPassengerEmail(email)
