@@ -2,6 +2,7 @@ package se.lexicon.flightbooking_api.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import se.lexicon.flightbooking_api.entity.FlightBooking;
 import se.lexicon.flightbooking_api.entity.FlightStatus;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @Component
+@Profile("!test")
 @RequiredArgsConstructor
 public class FlightBookingDataRunner implements CommandLineRunner {
 

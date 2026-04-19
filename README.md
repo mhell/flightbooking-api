@@ -53,9 +53,9 @@ Make sure your assistant can guide the user step-by-step and handle missing or u
 After integrating the Backend API with the AI model, create a user-friendly chatbot interface using ReactJS that:
 
 - Implements an interactive chatbot component that allows users to:
-  - Ask questions about flights
-  - Get assistance with bookings
-  - Receive real-time responses from the AI assistant
+    - Ask questions about flights
+    - Get assistance with bookings
+    - Receive real-time responses from the AI assistant
 
 
 

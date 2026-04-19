@@ -14,6 +14,9 @@ public interface FlightBookingRepository extends JpaRepository<FlightBooking, Lo
     
     // Find bookings by passenger email
     List<FlightBooking> findByPassengerEmail(String email);
+
+    // Find active bookings by passenger email
+    List<FlightBooking> findByPassengerEmailAndStatus(String email, FlightStatus status);
     
     // Find flights by destination
     List<FlightBooking> findByDestination(String destination);
