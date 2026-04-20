@@ -5,6 +5,7 @@ import java.util.Optional;
 
 public record ChatResponseDTO(
         String chatResponse,
-        Optional<FlightBookingDTO> bookedFlight,
+        Optional<FlightBookingDTO> confirmedBooking,
+        Optional<Long> confirmedCancelledFlightId,
         List<FlightBookingDTO> flights
 ){}
